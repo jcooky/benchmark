@@ -110,7 +110,6 @@ DEFINE_bool(benchmark_counters_tabular, false,
             "the console.  Valid values: 'true'/'yes'/1, 'false'/'no'/0."
             "Defaults to false.");
 
-DEFINE_int32(v, 0, "The level of verbose logging to output");
 
 namespace benchmark {
 
@@ -447,12 +446,8 @@ void ParseCommandLineFlags(int* argc, char** argv) {
         ParseStringFlag(argv[i], "benchmark_out_format",
                         &FLAGS_benchmark_out_format) ||
         ParseStringFlag(argv[i], "benchmark_color", &FLAGS_benchmark_color) ||
-        // "color_print" is the deprecated name for "benchmark_color".
-        // TODO: Remove this.
-        ParseStringFlag(argv[i], "color_print", &FLAGS_benchmark_color) ||
         ParseBoolFlag(argv[i], "benchmark_counters_tabular",
-                      &FLAGS_benchmark_counters_tabular) ||
-        ParseInt32Flag(argv[i], "v", &FLAGS_v)) {
+                      &FLAGS_benchmark_counters_tabular)) {
       for (int j = i; j != *argc - 1; ++j) argv[j] = argv[j + 1];
 
       --(*argc);
@@ -480,7 +475,7 @@ int InitializeStreams() {
 
 void Initialize(int* argc, char** argv) {
   internal::ParseCommandLineFlags(argc, argv);
-  internal::LogLevel() = FLAGS_v;
+  internal::LogLevel() = 0;
 }
 
 bool ReportUnrecognizedArguments(int argc, char** argv) {
